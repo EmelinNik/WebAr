@@ -1,44 +1,27 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <title>A-Frame NFT Video Example</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script>
-      AFRAME.registerComponent('play-on-click', {
-        init: function () {
-          this.el.addEventListener('click', () => {
-            // Предполагается, что видео уже загружено в ассеты
-            let video = document.querySelector('#video');
-            if (video.paused) {
-              video.play();
-            } else {
-              video.pause();
-            }
-          });
-        }
-      });
-    </script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
   </head>
-  <body>
-    <a-scene>
+  <body style='margin : 0px; overflow: hidden;'>
+    <a-scene embedded arjs='trackingMethod: "best"; sourceType: webcam;'>
+
       <a-assets>
-        <video id="video" src="mov_bbb.mp4"></video>
+        <video id="video" src="mov_bbb.mp4" autoplay loop="true" crossorigin="anonymous"></video>
       </a-assets>
-      <!-- Изображение NFT, на которое пользователь может кликнуть для воспроизведения видео -->
-      <a-image src="nikita.jpg"
-               position="0 1.6 -3"
-               scale="3 3 3"
-               play-on-click>
-      </a-image>
-      <!-- Видеоплеер, скрытый до активации -->
-      <a-video src="mov_bbb.mp4"
-               width="16"
-               height="9"
-               position="0 1.6 -2"
-               rotation="0 0 0"
-               visible="false">
-      </a-video>
+
+      <a-nft
+        type="nft"
+        url="yourPath/nikita"
+        smooth="true"
+        smoothCount="10"
+        smoothTolerance=".01"
+        smoothThreshold="5">
+        <a-video src="#video" position="0 0 0" rotation="-90 0 0" width="1.6" height="0.9" ></a-video>
+      </a-nft>
+
+      <a-entity camera></a-entity>
     </a-scene>
   </body>
 </html>

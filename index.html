@@ -1,33 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>NFT Image Example</title>
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <title>MindAR Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar-js/dist/mindar-image.prod.js"></script>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        #videoElement { display: none; }
+    </style>
 </head>
-<body style="margin: 0; overflow: hidden;">
-    <a-scene embedded arjs="trackingMethod: best; sourceType: webcam;">
-        <!-- NFT marker that points to the nikita.jpeg -->
-        <a-nft
-            type="nft"
-            url="nikita"
-            smooth="true"
-            smoothCount="10"
-            smoothTolerance="0.01"
-            smoothThreshold="5">
-            <!-- Image asset that should be displayed when the NFT marker is detected -->
-            <a-image
-                src="mov_bbb.jpeg"
-                width="2.5"
-                height="1.5"
-                position="0 0 0"
-                rotation="-90 0 0">
-            </a-image>
-        </a-nft>
-        
-        <!-- Camera -->
-        <a-entity camera></a-entity>
-    </a-scene>
+<body>
+    <video id="videoElement" width="320" height="240" controls autoplay loop>
+        <source src="mov_bbb.mp4" type="video/mp4">
+        Ваш браузер не поддерживает видео тег.
+    </video>
+    <div id="ar-container" style="width: 100vw; height: 100vh;"></div>
+
+    <script>
+        const arController = new MindARThree({
+            container: document.querySelector("#ar-container"),
+            imageTargetSrc: 'nikita.jpeg', // Путь к изображению-таргету
+            uiLoading: false,
+            uiScanning: false,
+            uiError: false,
+        });
+
+        const videoElement = document.getElementById('videoElement');
+
+        arController.start().then(() => {
+            const scene = arController.scene;
+            const camera = arController.camera;
+
+            arController.loadImageTargets(['nikita.jpeg']).then(([target]) => {
+                target.onTargetFound = () => {
+                    videoElement.style.display = "block"; // Показать видео
+                    videoElement.play(); // Начать воспроизведение
+                };
+
+                target.onTargetLost = () => {
+                    videoElement.pause(); // При потере цели остановить воспроизведение
+                    videoElement.style.display = "none"; // Скрыть видео
+                };
+            });
+        });
+    </script>
 </body>
 </html>

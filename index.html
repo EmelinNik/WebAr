@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>A-Frame NFT Video Example</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script>
+      AFRAME.registerComponent('play-on-click', {
+        init: function () {
+          this.el.addEventListener('click', () => {
+            // Предполагается, что видео уже загружено в ассеты
+            let video = document.querySelector('#video');
+            if (video.paused) {
+              video.play();
+            } else {
+              video.pause();
+            }
+          });
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <a-scene>
+      <a-assets>
+        <video id="video" src="путь_к_вашему_видео.mp4"></video>
+      </a-assets>
+      <!-- Изображение NFT, на которое пользователь может кликнуть для воспроизведения видео -->
+      <a-image src="путь_к_изображению_NFT.jpg"
+               position="0 1.6 -3"
+               scale="3 3 3"
+               play-on-click>
+      </a-image>
+      <!-- Видеоплеер, скрытый до активации -->
+      <a-video src="#video"
+               width="16"
+               height="9"
+               position="0 1.6 -2"
+               rotation="0 0 0"
+               visible="false">
+      </a-video>
+    </a-scene>
+  </body>
+</html>
